@@ -1,0 +1,22 @@
+const { createLogger, transports } = require('winston');
+
+const defaultLevel = process.env.LOG_LEVEL || 'info';
+
+const options = {
+	exitOnError: false,
+	level: defaultLevel
+};
+
+// eslint-disable-next-line new-cap
+const logger = new createLogger(options);
+
+if (process.env.NODE_ENV === 'development') {
+	logger.add(new transports.Console({
+		colorize: true,
+		showLevel: true,
+		timestamp: true,
+		level: 'debug'
+	}));
+}
+
+export default logger;
