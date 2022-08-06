@@ -2,13 +2,12 @@ import * as http from 'http';
 
 import logger from '../utils/winston-logger';
 import App from '../index';
+import { connectDB } from '../database_connection/firebase-functions';
 
 const server = http.createServer(App);
 
-
-
-const normalizePort = (val: number | string): number | string | boolean => {
-	const normolizedPort = (typeof val === 'string') ? parseInt(val, 10) : val;
+function normalizePort(val: number | string): number | string | boolean {
+	const normolizedPort = typeof val === 'string' ? parseInt(val, 10) : val;
 	if (isNaN(normolizedPort)) {
 		return val;
 	}
@@ -18,33 +17,38 @@ const normalizePort = (val: number | string): number | string | boolean => {
 	}
 
 	return false;
-};
+}
 
 const port = normalizePort(process.env.PORT || 3000);
 App.set('port', port);
 
 // eslint-disable-next-line no-undef
 const onError = (error: NodeJS.ErrnoException) => {
-	if (error.syscall !== 'listen') { throw error; }
-	const bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+	if (error.syscall !== 'listen') {
+		throw error;
+	}
+	const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 	switch (error.code) {
 		case 'EACCES':
 			logger.error(`${bind} requires elevated privileges`);
-			process.exit(1);
 			break;
+		// process.exit(1);
+
 		case 'EADDRINUSE':
 			logger.error(`${bind} is already in use`);
-			process.exit(1);
 			break;
+
 		default:
 			throw error;
 	}
+	process.exit(1);
 };
 
-const onListening = () => {
+const onListening = async () => {
 	const addr = server.address()!;
-	const bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
-	logger.info(`Listening on ${bind}`);
+	const bind = typeof addr === 'string' ? `pipe ${addr}` : `${addr.port}`;
+	logger.info(`Server is listening at http://localhost:${bind}`);
+	connectDB();
 };
 
 server.listen(port);

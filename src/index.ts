@@ -1,40 +1,24 @@
-import * as bodyParser from 'body-parser';
-import express from 'express';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
 
-// Creates and configures an ExpressJS web server.
-class App {
-	// ref to Express instance
-	express: express.Application;
+import serviceRouter from './routers/users_service/service.routes';
+import { errorHandler, notAvailableRouteErrorHandler } from './errorhandler/handler.error';
 
-	// Run configuration methods on the Express instance.
-	constructor() {
-		// test
-		this.express = express();
-		this.middleware();
-		this.routes();
-	}
+const app = express();
 
-	// Configure Express middleware.
-	private middleware(): void {
-		this.express.use(bodyParser.json());
-		this.express.use(bodyParser.urlencoded({ extended: false }));
-	}
+app.use(cors());
 
-	// Configure API endpoints.
-	private routes(): void {
-		/* This is just to get up and running, and to make sure what we've got is
-		 * working so far. This function will change when we start to add more
-		 * API endpoints */
-		const router = express.Router();
-		// placeholder route handler
-		router.get('/', (req: express.Request, res: express.Response, next: {}) => {
-			res.json({
-				message: 'Hello World! Shashikant'
-			});
-		});
-		this.express.use('/', router);
-	}
+app.use(
+	express.json({
+		verify: (req: Request, res: Response, buffer) => (req.body = buffer),
+		limit: '3000mb',
+	}),
+);
+app.use(express.urlencoded({ limit: '3000mb', extended: true }));
 
-}
+app.use('/api/v1/', serviceRouter);
 
-export default new App().express;
+app.use(errorHandler);
+app.use(notAvailableRouteErrorHandler);
+
+export default app;
