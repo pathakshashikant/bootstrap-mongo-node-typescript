@@ -2,7 +2,8 @@ import * as z from 'zod';
 import { string, object, boolean, TypeOf, date } from 'zod';
 const genderValues = ['Male', 'Female', 'Other', 'Not specified'] as const;
 const typeOfUserValues = ['individual', 'company', 'student', 'client'] as const;
-export const personalUserSchema = object({
+const definedAccessLevelRole = ['basic', 'admin', 'superadmin', 'manager'] as const;
+export const userSchema = object({
 	body: object({
 		accountStatus: string().default('active'),
 		isZPClient: boolean().default(false),
@@ -23,31 +24,14 @@ export const personalUserSchema = object({
 		phoneNumber: string()
 			.regex(/^\+[1-9]\d{8,14}$/, 'Not a valid phone number')
 			.optional(),
-
 		typeOfUser: z.enum(typeOfUserValues).default('individual'),
 		dateOfBirth: date().optional(),
 		fullAddress: string().optional(),
+		jobDesignation: string().optional(),
+		universityName: string().optional(),
+		studentId: string().optional(),
+		role: z.enum(definedAccessLevelRole).default('basic'),
 	}).strict(),
 });
 
-export const businessUserSchema = object({
-	body: object({
-		jobDesignation: string().default(''),
-	}).strict(),
-});
-
-export const studentUserTypeSchema = object({
-	body: object({
-		universityName: string({
-			required_error: 'University Name is missing',
-		}),
-		studentId: string({
-			required_error: 'Student ID is missing',
-		}),
-	}).strict(),
-});
-
-export type PersonalUserInput = TypeOf<typeof personalUserSchema>;
-
-export type BusinessUserInput = TypeOf<typeof personalUserSchema & typeof businessUserSchema>;
-export type StudentUserInput = TypeOf<typeof personalUserSchema> & TypeOf<typeof studentUserTypeSchema>;
+export type UserInput = TypeOf<typeof userSchema>;
