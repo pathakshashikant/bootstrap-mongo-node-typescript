@@ -7,7 +7,7 @@ export interface PersonalUserInput {
 	termsAndConditions: boolean;
 	isOptedForNewsLetters: boolean;
 	gender: 'Male' | 'Female' | 'Other' | 'Not specified';
-	contactNumber: number;
+	phoneNumber: number;
 	jobDesignation: string;
 	typeOfUser: 'individual' | 'company' | 'student' | 'client';
 	accountStatus: string;

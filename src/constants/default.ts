@@ -1,5 +1,5 @@
 export default {
 	collectionName: {
-		users: 'users',
+		userRecords: 'userRecords',
 	},
 };

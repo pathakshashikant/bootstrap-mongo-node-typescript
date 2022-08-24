@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 
-import serviceRouter from './routers/users_service/service.routes';
+import serviceRouter from './routers/users_routers/service.routes';
 import { errorHandler, notAvailableRouteErrorHandler } from './errorhandler/handler.error';
 
 const app = express();

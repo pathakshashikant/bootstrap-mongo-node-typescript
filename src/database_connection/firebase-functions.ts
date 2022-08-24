@@ -1,7 +1,7 @@
 import configProperty from './connect';
 import { initializeApp, getApp, getApps } from 'firebase-admin/app';
 import admin from 'firebase-admin';
-import logger from '../utils/winston-logger';
+import logger from '../features/logger_module/winston-logger';
 
 let dataBaseConnectionStatus = false;
 

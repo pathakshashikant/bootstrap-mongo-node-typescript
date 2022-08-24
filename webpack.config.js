@@ -6,12 +6,10 @@ const WebpackShellPlugin = require('webpack-shell-plugin-next');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-
 const devServer = process.env.NODE_ENV.trim() !== 'production';
 const serverMode = process.env.NODE_ENV.trim();
 
 module.exports = {
-
 	entry: {
 		main: path.resolve(__dirname, './src/bin/www.ts'),
 	},
@@ -25,13 +23,15 @@ module.exports = {
 
 	output: {
 		path: path.resolve(__dirname, './build'),
-		filename: '[name].bundle.js'
+		filename: '[name].bundle.js',
 	},
 
 	resolve: {
 		extensions: ['.ts', '.js'],
+		// alias: {
+		// 	Utilities: path.resolve(__dirname, 'src/features/'),
+		// },
 	},
-
 
 	plugins: [
 		new ForkTsCheckerWebpackPlugin(),
@@ -39,15 +39,14 @@ module.exports = {
 			onBuildStart: {
 				scripts: ['echo "Webpack Start"'],
 				blocking: true,
-				parallel: false
+				parallel: false,
 			},
 			onBuildEnd: {
 				scripts: devServer ? ['npm run run:dev'] : ['npm run run:prod'],
 				blocking: true,
-				parallel: false
+				parallel: false,
 			},
-		})
-
+		}),
 	],
 	module: {
 		rules: [
@@ -58,11 +57,11 @@ module.exports = {
 						loader: 'ts-loader',
 						options: {
 							configFile: devServer ? 'tsconfig.json' : 'tsconfig.prod.json',
-							transpileOnly: true
-						}
-					}
+							transpileOnly: true,
+						},
+					},
 				],
-			}
-		]
-	}
+			},
+		],
+	},
 };

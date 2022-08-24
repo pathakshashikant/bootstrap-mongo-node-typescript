@@ -1,6 +1,6 @@
 import * as http from 'http';
 
-import logger from '../utils/winston-logger';
+import logger from '../features/logger_module/winston-logger';
 import App from '../index';
 import { connectDB } from '../database_connection/firebase-functions';
 

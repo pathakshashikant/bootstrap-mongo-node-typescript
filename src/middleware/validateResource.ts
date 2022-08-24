@@ -8,13 +8,28 @@ const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: N
 			query: req.query,
 			params: req.params,
 		});
+
 		next();
 	} catch (e: any) {
-		const errors: any = [];
-		for (const i of e.errors) {
-			errors.push(i.message);
+		const errorList: Array<Object> = [];
+		for (const err of e.errors) {
+			const errorObject = {
+				field: err.validation || err.path[1] || 'input',
+				message: err.message,
+				code: err.code,
+			};
+			errorList.push(errorObject);
 		}
-		return res.status(400).send(errors);
+
+		return res.status(400).send(errorList);
+	}
+};
+
+export const validateRequestInput = () => (req: Request, res: Response, next: NextFunction) => {
+	try {
+		next();
+	} catch (e: any) {
+		return res.status(400).send(e.errors);
 	}
 };
 
