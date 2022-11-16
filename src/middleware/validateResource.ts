@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+
 import { AnyZodObject } from 'zod';
 
 const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +13,7 @@ const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: N
 		next();
 	} catch (e: any) {
 		const errorList: Array<Object> = [];
-		for (const err of e.errors) {
+		for (const err of e.issues) {
 			const errorObject = {
 				field: err.validation || err.path[1] || 'input',
 				message: err.message,

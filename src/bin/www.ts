@@ -1,8 +1,8 @@
 import * as http from 'http';
 
-import logger from '../features/logger_module/winston-logger';
+import logger from '../logger_module/winston-logger';
 import App from '../index';
-import { connectDB } from '../database_connection/firebase-functions';
+import dbConnect from '../database_connection/connect';
 
 const server = http.createServer(App);
 
@@ -47,10 +47,11 @@ const onError = (error: NodeJS.ErrnoException) => {
 const onListening = async () => {
 	const addr = server.address()!;
 	const bind = typeof addr === 'string' ? `pipe ${addr}` : `${addr.port}`;
-	logger.info(`Server is listening at http://localhost:${bind}`);
-	connectDB();
+	logger.info(`Server is listening at http://localhost:${bind}/api/v0/`);
+	await dbConnect();
 };
 
 server.listen(port);
-server.on('error', onError);
+
 server.on('listening', onListening);
+server.on('error', onError);

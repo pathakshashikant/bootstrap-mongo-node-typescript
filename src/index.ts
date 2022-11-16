@@ -1,7 +1,7 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 
-import serviceRouter from './routers/users_routers/service.routes';
+import serviceRouter from './routers/service.routes';
 import { errorHandler, notAvailableRouteErrorHandler } from './errorhandler/handler.error';
 
 const app = express();
@@ -10,13 +10,12 @@ app.use(cors());
 
 app.use(
 	express.json({
-		verify: (req: Request, res: Response, buffer) => (req.body = buffer),
-		limit: '3000mb',
+		limit: '50mb',
 	}),
 );
 app.use(express.urlencoded({ limit: '3000mb', extended: true }));
 
-app.use('/api/v1/', serviceRouter);
+app.use('/api/v0/', serviceRouter);
 
 app.use(errorHandler);
 app.use(notAvailableRouteErrorHandler);

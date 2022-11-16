@@ -1,4 +1,4 @@
-const { createLogger, transports, format } = require('winston');
+import { createLogger, transports, format } from 'winston';
 
 const defaultLevel = process.env.LOG_LEVEL || 'info';
 
@@ -8,7 +8,7 @@ const defaultOptions = {
 };
 
 const options = {
-	transports: [new transports.Console()],
+	transports: [new transports.Console(), new transports.File({ filename: 'logs/output.log' })],
 	format: format.combine(format.colorize({ all: true }), format.simple()),
 };
 

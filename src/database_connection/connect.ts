@@ -1,40 +1,16 @@
-import developmentJSONKey from './keys/service-key-development.json';
-// import productionJSONKey from './keys/service-key-production.json';
-const admin = require('firebase-admin');
+import logger from '../logger_module/winston-logger';
+import mongoose from 'mongoose';
+const connect: any = async () => {
+	// This should be either put in .env file or pm2 environment ecosystem file or we can use config module to store secrets.
+	// Used here for simplicity so you can replace the db instance with your one local mongo instance and test the services
+	const databaseUrl = 'mongodb://skyfri:skyfri@0.0.0.0:27000';
 
-const firebaseKey = {
-	firebaseDevelopmentConfig: {
-		apiKey: 'AIzaSyB6zGcc2HvnMHNlGzDZMe81iEaRTR6U_0o',
-		authDomain: 'djuli-zp-development.firebaseapp.com',
-		projectId: 'djuli-zp-development',
-		storageBucket: 'djuli-zp-development.appspot.com',
-		messagingSenderId: '285980090587',
-		appId: '1:285980090587:web:4d164adf5fc4c83c8cecfe',
-		databaseURL: 'https://djuli-zp-development.firebaseio.com',
-		credential: admin.credential.cert(developmentJSONKey),
-	},
-
-	firebaseProductionConfig: {
-		// apiKey: 'AIzaSyB6zGcc2HvnMHNlGzDZMe81iEaRTR6U_0o',
-		// authDomain: 'djuli-zp-development.firebaseapp.com',
-		// projectId: 'djuli-zp-development',
-		// storageBucket: 'djuli-zp-development.appspot.com',
-		// messagingSenderId: '285980090587',
-		// appId: '1:285980090587:web:4d164adf5fc4c83c8cecfe',
-		// databaseURL: 'https://djuli-zp-development.firebaseio.com',
-		// credential: admin.credential.cert(firebaseProductionConfig),
-	},
-};
-
-const devServer = process.env.NODE_ENV!.trim() !== 'production';
-const determineServiceAccount = () => {
-	if (devServer) {
-		return firebaseKey.firebaseDevelopmentConfig;
-	} else {
-		return firebaseKey.firebaseProductionConfig;
+	try {
+		await mongoose.connect(databaseUrl);
+		logger.info('Connected');
+	} catch (err) {
+		logger.error(`Disconnected: Error message :${err}`);
 	}
 };
 
-export default {
-	accountType: determineServiceAccount(),
-};
+export default connect;

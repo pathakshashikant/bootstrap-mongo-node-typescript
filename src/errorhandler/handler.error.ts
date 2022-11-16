@@ -15,6 +15,6 @@ export const notAvailableRouteErrorHandler = (req: Request, res: Response) => {
 	res.status(404);
 	res.json({
 		success: true,
-		message: 'Please check your route path and make sure it exist..',
+		message: 'Welcome to Skyfri API Services',
 	});
 };

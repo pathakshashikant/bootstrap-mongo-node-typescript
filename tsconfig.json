@@ -3,7 +3,8 @@
 		"noImplicitAny": true,
 		"rootDir": "./src",
 		"moduleResolution": "node",
-		"baseUrl": "./",
+		"baseUrl": "./", // This must be specified if "paths" is.
+
 		"target": "es2016",
 		"module": "commonjs",
 		"allowJs": true,

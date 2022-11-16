@@ -28,9 +28,7 @@ module.exports = {
 
 	resolve: {
 		extensions: ['.ts', '.js'],
-		// alias: {
-		// 	Utilities: path.resolve(__dirname, 'src/features/'),
-		// },
+
 	},
 
 	plugins: [
