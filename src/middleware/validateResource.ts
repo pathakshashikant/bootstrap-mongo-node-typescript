@@ -22,7 +22,7 @@ const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: N
 			errorList.push(errorObject);
 		}
 
-		return res.status(400).send(errorList);
+		return res.status(400).send({ success: false, errors: errorList });
 	}
 };
 

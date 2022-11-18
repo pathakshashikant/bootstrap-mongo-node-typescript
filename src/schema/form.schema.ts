@@ -12,7 +12,10 @@ const dateSchema = z.preprocess((arg) => {
 
 export const formSchema = object({
 	body: object({
-		agreementTitle: string({ required_error: 'Agreement title is required' }),
+		agreementTitle: string({ required_error: 'Agreement title is required' }).min(
+			4,
+			'Agreement title is too short. Should be minium 4 character long',
+		),
 		subsidiary: z.enum(subsidiaryOptions),
 		client: z.enum(clientsOption),
 		billingFrequency: z.enum(billingFrequencyOptions),
