@@ -11,3 +11,12 @@
 ## example : docker run -d --name skyfri_mongodb_assignment_server -p 27000:27017 -e MONGO_INITDB_ROOT_USERNAME=skyfri -e MONGO_INITDB_ROOT_PASSWORD=skyfri mongo
 ## mongodb://skyfri:skyfri@0.0.0.0:27000/
 
+
+# navigate to parent directory of the source code
+
+# run 'npm install'
+
+# connect your db: follow instructions above
+
+# run 'npm run start:dev' to start the server
+
